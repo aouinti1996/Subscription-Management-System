@@ -3,7 +3,6 @@
 import {useState} from 'react'
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import {BarChart2, DollarSign, UserMinus, Users} from "lucide-react"
-import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle} from "@/components/ui/dialog"
 import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card"
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
 
@@ -17,6 +16,7 @@ import Cancellations from "@/components/cancellations"
 import BillingManagement from "@/components/BillingManagement";
 import ProviderPerformance from "@/components/providerperformance";
 import SalesTeamGuidance from "@/components/salesTeamGuidance";
+import DailyTaskList from "@/components/DailyTaskList";
 
 
 const salesData = [
@@ -47,6 +47,7 @@ export default function SubscriptionManagement() {
                     <TabsTrigger value="performance">Performance</TabsTrigger>
                     <TabsTrigger value="provider-performance">provider performance</TabsTrigger>
                     <TabsTrigger value="salesGuidance">Guide commercial</TabsTrigger>
+                    <TabsTrigger value="daily-task">Daily task</TabsTrigger>
                 </TabsList>
                 <TabsContent value="dashboard">
                     <Dashboard/>
@@ -135,6 +136,9 @@ export default function SubscriptionManagement() {
                 </TabsContent>
                 <TabsContent value="salesGuidance">
                     <SalesTeamGuidance/>
+                </TabsContent>
+                <TabsContent value="daily-task">
+                    <DailyTaskList/>
                 </TabsContent>
             </Tabs>
 

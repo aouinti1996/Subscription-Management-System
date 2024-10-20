@@ -7,11 +7,26 @@ import {Badge} from "@/components/ui/badge"
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import {Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle} from "@/components/ui/dialog"
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select"
+import {Label} from "@/components/ui/label"
 import {Textarea} from "@/components/ui/textarea"
 import {Collapsible, CollapsibleContent, CollapsibleTrigger} from "@/components/ui/collapsible"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table"
-import {AlertTriangle, Bell, CheckCircle, ChevronDown, ChevronUp, Clock, Zap} from "lucide-react"
-import {Progress} from "@/components/ui/progress";
+import {Progress} from "@/components/ui/progress"
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/popover"
+import {Calendar} from "@/components/ui/calendar"
+import {
+    AlertTriangle,
+    Bell,
+    Calendar as CalendarIcon,
+    CheckCircle,
+    ChevronDown,
+    ChevronUp,
+    Clock,
+    History,
+    MessageSquare,
+    PhoneCall,
+    Zap
+} from "lucide-react"
 
 const initialNotifications = [
     {
@@ -20,12 +35,53 @@ const initialNotifications = [
         message: "5 abonnements expirent dans 7 jours",
         priority: 'high',
         status: 'unread',
+        score: 95,
         providers: [
-            {id: 101, name: "Prestataire A", plan: "Premium", expirationDate: "2023-10-25"},
-            {id: 102, name: "Prestataire B", plan: "Standard", expirationDate: "2023-10-26"},
-            {id: 103, name: "Prestataire C", plan: "Premium", expirationDate: "2023-10-27"},
-            {id: 104, name: "Prestataire D", plan: "Basic", expirationDate: "2023-10-28"},
-            {id: 105, name: "Prestataire E", plan: "Standard", expirationDate: "2023-10-29"},
+            {
+                id: 101,
+                name: "Prestataire A",
+                plan: "Premium",
+                expirationDate: "2023-10-25",
+                phone: "+33 1 23 45 67 89",
+                lastContact: "2023-10-10",
+                churnRisk: "Faible"
+            },
+            {
+                id: 102,
+                name: "Prestataire B",
+                plan: "Standard",
+                expirationDate: "2023-10-26",
+                phone: "+33 1 23 45 67 90",
+                lastContact: "2023-10-05",
+                churnRisk: "Moyen"
+            },
+            {
+                id: 103,
+                name: "Prestataire C",
+                plan: "Premium",
+                expirationDate: "2023-10-27",
+                phone: "+33 1 23 45 67 91",
+                lastContact: "2023-09-30",
+                churnRisk: "Élevé"
+            },
+            {
+                id: 104,
+                name: "Prestataire D",
+                plan: "Basic",
+                expirationDate: "2023-10-28",
+                phone: "+33 1 23 45 67 92",
+                lastContact: "2023-10-15",
+                churnRisk: "Faible"
+            },
+            {
+                id: 105,
+                name: "Prestataire E",
+                plan: "Standard",
+                expirationDate: "2023-10-29",
+                phone: "+33 1 23 45 67 93",
+                lastContact: "2023-10-01",
+                churnRisk: "Moyen"
+            },
         ]
     },
     {
@@ -34,10 +90,35 @@ const initialNotifications = [
         message: "3 nouveaux prestataires à convertir",
         priority: 'medium',
         status: 'unread',
+        score: 80,
         providers: [
-            {id: 201, name: "Nouveau Prestataire X", plan: "Essai", conversionProbability: "75%"},
-            {id: 202, name: "Nouveau Prestataire Y", plan: "Essai", conversionProbability: "60%"},
-            {id: 203, name: "Nouveau Prestataire Z", plan: "Essai", conversionProbability: "80%"},
+            {
+                id: 201,
+                name: "Nouveau Prestataire X",
+                plan: "Essai",
+                conversionProbability: "75%",
+                phone: "+33 1 23 45 67 94",
+                lastContact: "2023-10-12",
+                churnRisk: "Faible"
+            },
+            {
+                id: 202,
+                name: "Nouveau Prestataire Y",
+                plan: "Essai",
+                conversionProbability: "60%",
+                phone: "+33 1 23 45 67 95",
+                lastContact: "2023-10-08",
+                churnRisk: "Moyen"
+            },
+            {
+                id: 203,
+                name: "Nouveau Prestataire Z",
+                plan: "Essai",
+                conversionProbability: "80%",
+                phone: "+33 1 23 45 67 96",
+                lastContact: "2023-10-14",
+                churnRisk: "Faible"
+            },
         ]
     },
     {
@@ -46,6 +127,7 @@ const initialNotifications = [
         message: "Objectif mensuel atteint à 80%",
         priority: 'low',
         status: 'read',
+        score: 70,
         details: {
             currentValue: 80000,
             targetValue: 100000,
@@ -58,9 +140,26 @@ const initialNotifications = [
         message: "2 demandes de résiliation en attente",
         priority: 'high',
         status: 'unread',
+        score: 90,
         providers: [
-            {id: 401, name: "Prestataire M", plan: "Premium", reason: "Coût trop élevé"},
-            {id: 402, name: "Prestataire N", plan: "Standard", reason: "Manque de fonctionnalités"},
+            {
+                id: 401,
+                name: "Prestataire M",
+                plan: "Premium",
+                reason: "Coût trop élevé",
+                phone: "+33 1 23 45 67 97",
+                lastContact: "2023-10-03",
+                churnRisk: "Élevé"
+            },
+            {
+                id: 402,
+                name: "Prestataire N",
+                plan: "Standard",
+                reason: "Manque de fonctionnalités",
+                phone: "+33 1 23 45 67 98",
+                lastContact: "2023-10-07",
+                churnRisk: "Moyen"
+            },
         ]
     },
     {
@@ -69,10 +168,38 @@ const initialNotifications = [
         message: "Alerte de facturation : 3 paiements en retard",
         priority: 'high',
         status: 'unread',
+        score: 85,
         providers: [
-            {id: 501, name: "Prestataire P", plan: "Premium", amountDue: 500, daysLate: 15},
-            {id: 502, name: "Prestataire Q", plan: "Standard", amountDue: 300, daysLate: 10},
-            {id: 503, name: "Prestataire R", plan: "Basic", amountDue: 100, daysLate: 5},
+            {
+                id: 501,
+                name: "Prestataire P",
+                plan: "Premium",
+                amountDue: 500,
+                daysLate: 15,
+                phone: "+33 1 23 45 67 99",
+                lastContact: "2023-09-25",
+                churnRisk: "Élevé"
+            },
+            {
+                id: 502,
+                name: "Prestataire Q",
+                plan: "Standard",
+                amountDue: 300,
+                daysLate: 10,
+                phone: "+33 1 23 45 68 00",
+                lastContact: "2023-09-30",
+                churnRisk: "Moyen"
+            },
+            {
+                id: 503,
+                name: "Prestataire R",
+                plan: "Basic",
+                amountDue: 100,
+                daysLate: 5,
+                phone: "+33 1 23 45 68 01",
+                lastContact: "2023-10-05",
+                churnRisk: "Faible"
+            },
         ]
     },
 ]
@@ -82,6 +209,7 @@ export default function NotificationsPage() {
     const [activeTab, setActiveTab] = useState('all')
     const [selectedNotification, setSelectedNotification] = useState(null)
     const [expandedNotifications, setExpandedNotifications] = useState([])
+    const [selectedDate, setSelectedDate] = useState(null)
 
     const filterNotifications = (tab) => {
         switch (tab) {
@@ -90,7 +218,7 @@ export default function NotificationsPage() {
             case 'high':
                 return notifications.filter(n => n.priority === 'high')
             default:
-                return notifications
+                return notifications.sort((a, b) => b.score - a.score)
         }
     }
 
@@ -124,6 +252,10 @@ export default function NotificationsPage() {
                                 <SelectItem value="extend">Prolonger gratuitement pour 7 jours</SelectItem>
                             </SelectContent>
                         </Select>
+                        <div>
+                            <Label htmlFor="custom-offer">Offre personnalisée</Label>
+                            <Textarea id="custom-offer" placeholder="Entrez une offre personnalisée..."/>
+                        </div>
                     </div>
                 )
             case 'conversion':
@@ -140,6 +272,11 @@ export default function NotificationsPage() {
                                 <SelectItem value="demo">Proposer une démo personnalisée</SelectItem>
                             </SelectContent>
                         </Select>
+                        <div>
+                            <Label htmlFor="conversion-notes">Notes pour la conversion</Label>
+                            <Textarea id="conversion-notes"
+                                      placeholder="Entrez vos notes pour la stratégie de conversion..."/>
+                        </div>
                     </div>
                 )
             case 'cancellation':
@@ -156,6 +293,10 @@ export default function NotificationsPage() {
                                 <SelectItem value="feedback">Demander un feedback</SelectItem>
                             </SelectContent>
                         </Select>
+                        <div>
+                            <Label htmlFor="retention-strategy">Stratégie de rétention</Label>
+                            <Textarea id="retention-strategy" placeholder="Décrivez votre stratégie de rétention..."/>
+                        </div>
                     </div>
                 )
             case 'billing':
@@ -172,6 +313,10 @@ export default function NotificationsPage() {
                                 <SelectItem value="plan">Proposer un plan de paiement</SelectItem>
                             </SelectContent>
                         </Select>
+                        <div>
+                            <Label htmlFor="payment-plan">Plan de paiement proposé</Label>
+                            <Textarea id="payment-plan" placeholder="Décrivez le plan de paiement proposé..."/>
+                        </div>
                     </div>
                 )
             default:
@@ -281,6 +426,7 @@ function NotificationList({notifications, onAction, onMarkAsRead, expandedNotifi
                                             {notification.status === 'unread' && (
                                                 <Badge variant="outline">Non lu</Badge>
                                             )}
+                                            <Badge variant="secondary">Score: {notification.score}</Badge>
                                         </div>
                                     </div>
                                 </div>
@@ -314,6 +460,8 @@ function NotificationList({notifications, onAction, onMarkAsRead, expandedNotifi
 }
 
 function NotificationDetails({notification, onAction}) {
+    const [selectedDate, setSelectedDate] = useState(null)
+
     switch (notification.type) {
         case 'expiration':
         case 'conversion':
@@ -326,7 +474,10 @@ function NotificationDetails({notification, onAction}) {
                             <TableHead>Prestataire</TableHead>
                             <TableHead>Plan</TableHead>
                             <TableHead>{getDetailHeader(notification.type)}</TableHead>
-                            <TableHead>Action</TableHead>
+                            <TableHead>Téléphone</TableHead>
+                            <TableHead>Dernier contact</TableHead>
+                            <TableHead>Risque de churn</TableHead>
+                            <TableHead>Actions</TableHead>
                         </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -336,9 +487,46 @@ function NotificationDetails({notification, onAction}) {
                                 <TableCell>{provider.plan}</TableCell>
                                 <TableCell>{getDetailValue(notification.type, provider)}</TableCell>
                                 <TableCell>
-                                    <Button size="sm" onClick={() => onAction(notification, provider.id)}>
-                                        {getActionText(notification.type)}
+                                    <Button variant="link" size="sm"
+                                            onClick={() => window.open(`tel:${provider.phone}`)}>
+                                        <PhoneCall className="h-4 w-4 mr-2"/>
+                                        {provider.phone}
                                     </Button>
+                                </TableCell>
+                                <TableCell>{provider.lastContact}</TableCell>
+                                <TableCell>
+                                    <Badge
+                                        variant={provider.churnRisk === 'Élevé' ? 'destructive' : provider.churnRisk === 'Moyen' ? 'default' : 'secondary'}>
+                                        {provider.churnRisk}
+                                    </Badge>
+                                </TableCell>
+                                <TableCell>
+                                    <div className="flex space-x-2">
+                                        <Button size="sm" onClick={() => onAction(notification, provider.id)}>
+                                            {getActionText(notification.type)}
+                                        </Button>
+                                        <Popover>
+                                            <PopoverTrigger asChild>
+                                                <Button variant="outline" size="sm">
+                                                    <CalendarIcon className="h-4 w-4"/>
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-auto p-0">
+                                                <Calendar
+                                                    mode="single"
+                                                    selected={selectedDate}
+                                                    onSelect={setSelectedDate}
+                                                    initialFocus
+                                                />
+                                            </PopoverContent>
+                                        </Popover>
+                                        <Button variant="outline" size="sm">
+                                            <History className="h-4 w-4"/>
+                                        </Button>
+                                        <Button variant="outline" size="sm">
+                                            <MessageSquare className="h-4 w-4"/>
+                                        </Button>
+                                    </div>
                                 </TableCell>
                             </TableRow>
                         ))}
